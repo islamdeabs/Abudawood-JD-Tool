@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://islamdeabs.github.io/Abudawood-JD-Tool/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abudawood Group — Job Description Generator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+  :root {
+    --gold:#C9A84C; --gold-dark:#9A7A2E;
+    --navy:#0D1B2A; --navy-mid:#1A2E42; --navy-soft:#243447;
+    --white:#FFFFFF; --off-white:#F8F6F1; --muted:#8A9BB0;
+    --border:#2E4058; --error:#E74C3C;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Inter',sans-serif; background:var(--navy); color:var(--white); min-height:100vh; }
+
+  header { background:linear-gradient(135deg,var(--navy),var(--navy-mid)); border-bottom:1px solid var(--gold-dark); padding:18px 36px; display:flex; align-items:center; gap:16px; }
+  .logo { width:46px; height:46px; background:var(--gold); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--navy); flex-shrink:0; }
+  .hd h1 { font-family:'Playfair Display',serif; font-size:18px; font-weight:600; }
+  .hd p { font-size:11px; color:var(--gold); font-weight:500; letter-spacing:.08em; text-transform:uppercase; margin-top:2px; }
+
+  .container { max-width:1080px; margin:0 auto; padding:32px 20px 60px; display:grid; grid-template-columns:340px 1fr; gap:28px; align-items:start; }
+  .panel { background:var(--navy-mid); border:1px solid var(--border); border-radius:12px; overflow:hidden; position:sticky; top:20px; }
+  .ph { background:linear-gradient(135deg,var(--gold-dark),var(--gold)); padding:14px 22px; }
+  .ph h2 { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--navy); }
+  .pb { padding:18px; display:flex; flex-direction:column; gap:14px; }
+
+  .lbl { display:block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--gold); margin-bottom:5px; }
+  select, input[type="text"], input[type="password"], textarea { width:100%; background:var(--navy-soft); border:1px solid var(--border); border-radius:8px; color:var(--white); font-family:'Inter',sans-serif; font-size:13px; padding:9px 12px; outline:none; transition:border-color .2s; appearance:none; }
+  select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px; }
+  select:focus, input:focus, textarea:focus { border-color:var(--gold); }
+  select option { background:var(--navy-mid); }
+  textarea { resize:vertical; min-height:65px; line-height:1.5; }
+
+  .key-row { display:flex; gap:8px; align-items:center; }
+  .key-row input { flex:1; }
+  .key-saved { font-size:11px; color:#2ECC71; display:none; white-space:nowrap; }
+  .key-saved.show { display:block; }
+
+  .mkt-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .mkt-chip { display:flex; align-items:center; gap:7px; background:var(--navy-soft); border:1px solid var(--border); border-radius:6px; padding:7px 10px; cursor:pointer; transition:border-color .2s,background .2s; user-select:none; }
+  .mkt-chip.on { border-color:var(--gold); background:rgba(201,168,76,.08); }
+  .chip-dot { width:13px; height:13px; border:1.5px solid var(--border); border-radius:3px; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  .mkt-chip.on .chip-dot { background:var(--gold); border-color:var(--gold); }
+  .chip-dot svg { display:none; }
+  .mkt-chip.on .chip-dot svg { display:block; }
+  .chip-lbl { font-size:12px; font-weight:500; }
+  .divider { height:1px; background:var(--border); }
+  .custom-row { display:none; margin-top:8px; }
+  .custom-row.vis { display:block; }
+
+  .btn-gen { width:100%; background:linear-gradient(135deg,var(--gold-dark),var(--gold)); color:var(--navy); border:none; border-radius:8px; padding:13px; font-family:'Inter',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; transition:opacity .2s,transform .1s; }
+  .btn-gen:hover:not(:disabled) { opacity:.9; transform:translateY(-1px); }
+  .btn-gen:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+
+  .out-panel { background:var(--navy-mid); border:1px solid var(--border); border-radius:12px; overflow:hidden; min-height:500px; display:flex; flex-direction:column; }
+  .out-head { background:var(--navy-soft); border-bottom:1px solid var(--border); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; }
+  .out-title { font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  .btn-dl { background:var(--gold-dark); border:none; border-radius:6px; color:var(--navy); font-family:'Inter',sans-serif; font-size:12px; font-weight:700; padding:7px 14px; cursor:pointer; transition:background .2s; }
+  .btn-dl:hover { background:var(--gold); }
+  .btn-dl:disabled { opacity:.35; cursor:not-allowed; }
+  .out-body { padding:26px; flex:1; overflow-y:auto; color:var(--off-white); font-size:14px; line-height:1.7; }
+
+  .placeholder { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; color:var(--muted); text-align:center; padding:40px; }
+  .ph-icon { width:60px; height:60px; border:2px dashed var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; }
+  .placeholder h3 { font-size:15px; font-weight:500; }
+  .placeholder p { font-size:13px; max-width:260px; line-height:1.6; }
+
+  .loading { display:none; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:60px; color:var(--muted); text-align:center; }
+  .spin { width:40px; height:40px; border:3px solid var(--border); border-top-color:var(--gold); border-radius:50%; animation:sp .8s linear infinite; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+
+  .jd-out { display:none; }
+  .jd-out.show { display:block; }
+  .jd-title { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:var(--white); margin-bottom:4px; }
+  .jd-sub { font-size:12px; color:var(--gold); text-transform:uppercase; letter-spacing:.08em; font-weight:600; margin-bottom:20px; }
+  .info-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px; }
+  .info-card { background:rgba(201,168,76,.06); border:1px solid rgba(201,168,76,.2); border-radius:8px; padding:10px 14px; }
+  .ic-lbl { font-size:10px; color:var(--gold); font-weight:600; text-transform:uppercase; letter-spacing:.07em; margin-bottom:3px; }
+  .ic-val { font-size:13px; }
+  .jd-section { margin-bottom:20px; }
+  .jd-section h3 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); margin-bottom:9px; padding-bottom:7px; border-bottom:1px solid var(--border); }
+  .jd-section p { font-size:13px; line-height:1.75; }
+  .jd-section ul { list-style:none; padding:0; }
+  .jd-section ul li { font-size:13px; line-height:1.6; padding:4px 0 4px 15px; position:relative; border-bottom:1px solid rgba(46,64,88,.5); }
+  .jd-section ul li:last-child { border-bottom:none; }
+  .jd-section ul li::before { content:''; position:absolute; left:0; top:12px; width:5px; height:5px; background:var(--gold); border-radius:50%; }
+  .err { background:rgba(231,76,60,.1); border:1px solid rgba(231,76,60,.3); border-radius:8px; padding:10px 14px; font-size:12px; color:var(--error); display:none; margin-top:6px; }
+
+  @media (max-width:768px) { .container { grid-template-columns:1fr; padding:16px 12px 40px; } .panel { position:static; } header { padding:14px 16px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">A</div>
+  <div class="hd">
+    <h1>Abudawood Group</h1>
+    <p>Job Description Generator &nbsp;·&nbsp; Powered by AI</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="panel">
+    <div class="ph"><h2>Configuration</h2></div>
+    <div class="pb">
+
+      <div>
+        <label class="lbl">🔑 Groq API Key</label>
+        <div class="key-row">
+          <input type="password" id="apiKey" placeholder="gsk_xxxxxxxxxxxx" autocomplete="off" oninput="saveKey()">
+          <span class="key-saved show" id="keySaved">✓ Saved</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <label class="lbl">Job Title</label>
+        <select id="jSel" onchange="chgTitle()">
+          <option value="">— Select a position —</option>
+          <optgroup label="Group C-Suite">
+            <option value="Group Chief Executive Officer (Group CEO)">Group CEO</option>
+            <option value="Group Chief Financial Officer (Group CFO)">Group CFO</option>
+            <option value="Group Chief Human Resources Officer (Group CHRO)">Group CHRO</option>
+            <option value="Group Chief Operating Officer (Group COO)">Group COO</option>
+            <option value="Group Chief Commercial Officer (Group CCO)">Group CCO</option>
+          </optgroup>
+          <optgroup label="Country / Market Leadership">
+            <option value="Country General Manager">Country General Manager</option>
+            <option value="Country Sales Director">Country Sales Director</option>
+            <option value="Country Finance Director">Country Finance Director</option>
+            <option value="Country HR Director">Country HR Director</option>
+            <option value="Country Supply Chain Director">Country Supply Chain Director</option>
+          </optgroup>
+          <optgroup label="Commercial &amp; Sales">
+            <option value="National Sales Manager">National Sales Manager</option>
+            <option value="Key Account Manager">Key Account Manager</option>
+            <option value="Trade Marketing Manager">Trade Marketing Manager</option>
+            <option value="Sales Representative">Sales Representative</option>
+            <option value="Merchandising Manager">Merchandising Manager</option>
+          </optgroup>
+          <optgroup label="Finance &amp; Accounting">
+            <option value="Finance Manager">Finance Manager</option>
+            <option value="Financial Controller">Financial Controller</option>
+            <option value="Treasury Manager">Treasury Manager</option>
+          </optgroup>
+          <optgroup label="Supply Chain &amp; Logistics">
+            <option value="Supply Chain Manager">Supply Chain Manager</option>
+            <option value="Logistics Manager">Logistics Manager</option>
+            <option value="Warehouse Manager">Warehouse Manager</option>
+            <option value="Fleet Manager">Fleet Manager</option>
+          </optgroup>
+          <optgroup label="Human Resources">
+            <option value="HR Business Partner">HR Business Partner</option>
+            <option value="Total Rewards Manager">Total Rewards Manager</option>
+            <option value="Talent Acquisition Manager">Talent Acquisition Manager</option>
+            <option value="Payroll Manager">Payroll Manager</option>
+          </optgroup>
+          <optgroup label="Technology">
+            <option value="IT Manager">IT Manager</option>
+            <option value="Business Intelligence Manager">BI Manager</option>
+            <option value="ERP Manager">ERP Manager</option>
+          </optgroup>
+          <option value="__custom__">＋ Other (type below)</option>
+        </select>
+        <div class="custom-row" id="cRow">
+          <input type="text" id="cTitle" placeholder="e.g. Shared Services Director">
+        </div>
+      </div>
+
+      <div>
+        <label class="lbl">Role Scope</label>
+        <select id="scopeSel">
+          <option value="Group-wide (all markets)">Group-wide (all markets)</option>
+          <option value="Regional (Middle East)">Regional — Middle East</option>
+          <option value="Country-specific">Country-specific</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="lbl">Active Markets</label>
+        <div class="mkt-grid" id="mktGrid">
+          <div class="mkt-chip on" onclick="this.classList.toggle(&#39;on&#39;)"><div class="chip-dot"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span class="chip-lbl">🇸🇦 Saudi Arabia</span></div>
+          <div class="mkt-chip on" onclick="this.classList.toggle(&#39;on&#39;)"><div class="chip-dot"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span class="chip-lbl">🇪🇬 Egypt</span></div>
+          <div class="mkt-chip on" onclick="this.classList.toggle(&#39;on&#39;)"><div class="chip-dot"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span class="chip-lbl">🇮🇶 Iraq</span></div>
+          <div class="mkt-chip on" onclick="this.classList.toggle(&#39;on&#39;)"><div class="chip-dot"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span class="chip-lbl">🇧🇭 Bahrain</span></div>
+          <div class="mkt-chip on" onclick="this.classList.toggle(&#39;on&#39;)"><div class="chip-dot"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span class="chip-lbl">🇦🇪 UAE</span></div>
+          <div class="mkt-chip" onclick="this.classList.toggle(&#39;on&#39;)"><div class="chip-dot"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span class="chip-lbl">🇵🇰 Pakistan</span></div>
+        </div>
+      </div>
+
+      <div>
+        <label class="lbl">Additional Notes <span style="font-weight:400;text-transform:none;font-size:11px;">(optional)</span></label>
+        <textarea id="notes" placeholder="e.g. Reports to Board of Directors..."></textarea>
+      </div>
+
+      <div class="divider"></div>
+      <div id="errMsg" class="err" style="display: none;"></div>
+      <button class="btn-gen" id="genBtn" onclick="generate()">✦ Generate Job Description</button>
+    </div>
+  </div>
+
+  <div class="out-panel">
+    <div class="out-head">
+      <span class="out-title">Job Description</span>
+      <button class="btn-dl" id="dlBtn" onclick="dlWord()">↓ Download Word</button>
+    </div>
+    <div class="out-body">
+      <div class="placeholder" id="phState" style="display: none;">
+        <div class="ph-icon">📋</div>
+        <h3>Ready to Generate</h3>
+        <p>Enter your Groq API Key, select a position, then click Generate.</p>
+      </div>
+      <div class="loading" id="ldState" style="display: none;">
+        <div class="spin"></div>
+        <p style="font-size:13px;">Generating Job Description…</p>
+      </div>
+      <div class="jd-out show" id="jdOut">
+    <div class="jd-title">Group Chief Executive Officer (Group CEO)</div>
+    <div class="jd-sub">Abudawood Group &nbsp;·&nbsp; Executive Management &nbsp;·&nbsp; Group-wide (all markets)</div>
+    <div class="info-row">
+      <div class="info-card"><div class="ic-lbl">Reports To</div><div class="ic-val">Board of Directors</div></div>
+      <div class="info-card"><div class="ic-lbl">Active Markets</div><div class="ic-val">Saudi Arabia, Egypt, Iraq, Bahrain, UAE</div></div>
+    </div>
+    <div class="jd-section"><h3>Job Summary</h3><p>The Group Chief Executive Officer (Group CEO) will provide strategic leadership to drive business growth, expansion, and profitability across all markets. The Group CEO will be responsible for developing and implementing the company's overall vision, mission, and strategy, while ensuring alignment with the organization's values. The ideal candidate will have a proven track record of success in leading large, complex organizations, with a deep understanding of the FMCG industry and the Middle East market. The Group CEO will be expected to build and maintain strong relationships with key stakeholders, including customers, suppliers, and employees.</p></div>
+    <div class="jd-section"><h3>Key Responsibilities</h3><ul><li>Develop and implement the company's overall strategy and vision</li><li>Provide leadership and direction to the executive management team</li><li>Drive business growth and expansion across all markets</li><li>Build and maintain strong relationships with key stakeholders</li><li>Oversee the development and execution of business plans and budgets</li><li>Monitor and analyze market trends and competitor activity</li><li>Identify and mitigate risks to the business</li><li>Ensure compliance with all relevant laws and regulations</li><li>Foster a culture of innovation and entrepreneurship</li><li>Develop and implement initiatives to improve operational efficiency and effectiveness</li><li>Lead and manage change initiatives across the organization</li></ul></div>
+    <div class="jd-section"><h3>Education &amp; Qualifications</h3><ul><li>Bachelor's degree in Business Administration, Finance, or a related field</li><li>MBA or other advanced degree preferred</li><li>Relevant professional certifications (e.g. CPA, CMA)</li></ul></div>
+    <div class="jd-section"><h3>Experience Requirements</h3><ul><li>Minimum 15 years of experience in a senior leadership role, preferably in the FMCG industry</li><li>Proven track record of success in driving business growth and expansion</li><li>Experience in managing large, complex organizations</li><li>Strong understanding of the Middle East market and cultural nuances</li><li>Experience in building and maintaining strong relationships with key stakeholders</li></ul></div>
+    <div class="jd-section"><h3>Skills</h3><ul><li>Strong strategic thinking and planning skills</li><li>Excellent leadership and management skills</li><li>Strong communication and interpersonal skills</li><li>Ability to build and maintain strong relationships</li><li>Strong analytical and problem-solving skills</li><li>Ability to work in a fast-paced, dynamic environment</li></ul></div>
+    <div class="jd-section"><h3>Behavioral Competencies</h3><ul><li>Strategic Thinking</li><li>Leadership</li><li>Collaboration and Partnership</li><li>Communication and Influencing</li><li>Adaptability and Flexibility</li><li>Results Orientation</li></ul></div>
+    <div class="jd-section"><h3>Working Conditions</h3><p>The Group CEO will be based in Saudi Arabia, with frequent travel to other markets in the Middle East. The role will require a high level of energy, flexibility, and adaptability, with the ability to work in a fast-paced, dynamic environment.</p></div>
+  </div>
+    </div>
+  </div>
+</div>
+
+<script src="./Abudawood Group — Job Description Generator_files/index.js.download"></script>
+<script>
+let jdData = null, jdTitle = '';
+
+// ── Load saved key on startup ──
+window.addEventListener('load', function() {
+  try {
+    const saved = localStorage.getItem('adg_groq_key');
+    if (saved) {
+      document.getElementById('apiKey').value = saved;
+      document.getElementById('keySaved').classList.add('show');
+    }
+  } catch(e) {}
+});
+
+// ── Save key as user types ──
+function saveKey() {
+  try {
+    const k = document.getElementById('apiKey').value.trim();
+    if (k.length > 10) {
+      localStorage.setItem('adg_groq_key', k);
+      document.getElementById('keySaved').classList.add('show');
+    } else {
+      localStorage.removeItem('adg_groq_key');
+      document.getElementById('keySaved').classList.remove('show');
+    }
+  } catch(e) {}
+}
+
+function chgTitle() {
+  const v = document.getElementById('jSel').value;
+  document.getElementById('cRow').classList.toggle('vis', v === '__custom__');
+}
+function getTitle() {
+  const v = document.getElementById('jSel').value;
+  return v === '__custom__' ? document.getElementById('cTitle').value.trim() : v;
+}
+function getMkts() {
+  return [...document.querySelectorAll('#mktGrid .mkt-chip.on .chip-lbl')]
+    .map(s => s.textContent.replace(/^[\u{1F1E0}-\u{1F1FF}]{2}\s*/u,'').trim());
+}
+function showErr(m) { const e=document.getElementById('errMsg'); e.textContent=m; e.style.display='block'; }
+function hideErr() { document.getElementById('errMsg').style.display='none'; }
+
+async function generate() {
+  hideErr();
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const title  = getTitle();
+  const scope  = document.getElementById('scopeSel').value;
+  const mkts   = getMkts();
+  const notes  = document.getElementById('notes').value.trim();
+
+  if (!apiKey) { showErr('Please enter your Groq API Key.'); return; }
+  if (!title)  { showErr('Please select or enter a job title.'); return; }
+  if (!mkts.length) { showErr('Please select at least one market.'); return; }
+
+  jdData = null; jdTitle = title;
+  document.getElementById('genBtn').disabled = true;
+  document.getElementById('dlBtn').disabled  = true;
+  document.getElementById('phState').style.display = 'none';
+  document.getElementById('ldState').style.display = 'flex';
+  document.getElementById('jdOut').classList.remove('show');
+
+  const mktsStr = mkts.join(', ');
+  const prompt = `You are a senior HR consultant specializing in FMCG distribution across the Middle East.
+
+Generate a professional Job Description for: "${title}" at Abudawood Group.
+
+COMPANY CONTEXT:
+- Abudawood Group: leading FMCG Sales & Distribution conglomerate, founded Saudi Arabia 1935
+- Distributes 50+ global brands: P&G, Clorox, Ferrero, Kellogg's, Hershey's, Duracell, Coty, Dilmah, Dr. Oetker
+- Active markets: ${mktsStr}
+- Role scope: ${scope}
+- 4,000+ employees, 1,500+ vehicles, 260,000+ stores, 80M+ cases/year
+- Values: We Deliver, We Respect, We Own, We Partner, We Dare, We Grow
+${notes ? '- Additional context: ' + notes : ''}
+
+Return ONLY a JSON object (no markdown, no backticks):
+{
+  "title": "${title}",
+  "department": "...",
+  "reportsTo": "...",
+  "scope": "${scope}",
+  "markets": "${mktsStr}",
+  "jobSummary": "3-4 sentence paragraph",
+  "keyResponsibilities": ["10-12 action-verb bullet points"],
+  "qualifications": {
+    "education": ["2-3 items"],
+    "experience": ["4-5 items"],
+    "skills": ["4-6 items"]
+  },
+  "competencies": ["5-6 behavioral competencies"],
+  "workingConditions": "1-2 sentences"
+}`;
+
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+      body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role:'user', content:prompt }], max_tokens:1500, temperature:0.7 })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'Groq API error');
+    const raw = data.choices[0].message.content.replace(/```json|```/g,'').trim();
+    jdData = JSON.parse(raw);
+    renderJD(jdData);
+    document.getElementById('dlBtn').disabled = false;
+  } catch(err) {
+    document.getElementById('ldState').style.display = 'none';
+    document.getElementById('phState').style.display = 'flex';
+    showErr('Error: ' + err.message);
+  } finally {
+    document.getElementById('genBtn').disabled = false;
+  }
+}
+
+function li(arr) { return arr.map(i=>`<li>${i}</li>`).join(''); }
+
+function renderJD(jd) {
+  document.getElementById('ldState').style.display = 'none';
+  const el = document.getElementById('jdOut');
+  el.innerHTML = `
+    <div class="jd-title">${jd.title}</div>
+    <div class="jd-sub">Abudawood Group &nbsp;·&nbsp; ${jd.department} &nbsp;·&nbsp; ${jd.scope}</div>
+    <div class="info-row">
+      <div class="info-card"><div class="ic-lbl">Reports To</div><div class="ic-val">${jd.reportsTo}</div></div>
+      <div class="info-card"><div class="ic-lbl">Active Markets</div><div class="ic-val">${jd.markets}</div></div>
+    </div>
+    <div class="jd-section"><h3>Job Summary</h3><p>${jd.jobSummary}</p></div>
+    <div class="jd-section"><h3>Key Responsibilities</h3><ul>${li(jd.keyResponsibilities)}</ul></div>
+    <div class="jd-section"><h3>Education & Qualifications</h3><ul>${li(jd.qualifications.education)}</ul></div>
+    <div class="jd-section"><h3>Experience Requirements</h3><ul>${li(jd.qualifications.experience)}</ul></div>
+    <div class="jd-section"><h3>Skills</h3><ul>${li(jd.qualifications.skills)}</ul></div>
+    <div class="jd-section"><h3>Behavioral Competencies</h3><ul>${li(jd.competencies)}</ul></div>
+    <div class="jd-section"><h3>Working Conditions</h3><p>${jd.workingConditions}</p></div>
+  `;
+  el.classList.add('show');
+}
+
+async function dlWord() {
+  if (!jdData) return;
+  const jd = jdData;
+  const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+          AlignmentType, LevelFormat, BorderStyle, WidthType, ShadingType } = docx;
+  const GOLD = "C9A84C";
+  const numCfg = { config:[{ reference:"b", levels:[{ level:0, format:LevelFormat.BULLET, text:"\u2022", alignment:AlignmentType.LEFT, style:{ paragraph:{ indent:{ left:720, hanging:360 } } } }] }] };
+  const bl = t => new Paragraph({ numbering:{ reference:"b", level:0 }, spacing:{ after:80 }, children:[new TextRun({ text:t, font:"Arial", size:22 })] });
+  const sh = t => new Paragraph({ spacing:{ before:280, after:120 }, border:{ bottom:{ style:BorderStyle.SINGLE, size:6, color:GOLD, space:4 } }, children:[new TextRun({ text:t.toUpperCase(), font:"Arial", size:22, bold:true, color:GOLD, characterSpacing:80 })] });
+  const bd = t => new Paragraph({ spacing:{ after:120 }, children:[new TextRun({ text:t, font:"Arial", size:22 })] });
+  const sp = () => new Paragraph({ spacing:{ after:80 }, children:[] });
+  const mkCell = (label, val) => new TableCell({ width:{ size:4513, type:WidthType.DXA }, margins:{ top:100, bottom:100, left:160, right:160 }, shading:{ fill:"FBF5E6", type:ShadingType.CLEAR }, borders:{ top:{ style:BorderStyle.SINGLE, size:2, color:GOLD }, bottom:{ style:BorderStyle.NONE }, left:{ style:BorderStyle.NONE }, right:{ style:BorderStyle.NONE } }, children:[ new Paragraph({ children:[new TextRun({ text:label, font:"Arial", size:18, bold:true, color:GOLD })] }), new Paragraph({ spacing:{ before:40 }, children:[new TextRun({ text:val, font:"Arial", size:22 })] }) ] });
+  const infoTbl = new Table({ width:{ size:9026, type:WidthType.DXA }, columnWidths:[4513,4513], rows:[new TableRow({ children:[ mkCell("REPORTS TO", jd.reportsTo), mkCell("ACTIVE MARKETS", jd.markets) ] })] });
+  const children = [
+    new Paragraph({ spacing:{ after:60 }, children:[new TextRun({ text:"ABUDAWOOD GROUP", font:"Arial", size:20, bold:true, color:GOLD, characterSpacing:120 })] }),
+    new Paragraph({ spacing:{ after:80 }, children:[new TextRun({ text:jd.title, font:"Arial", size:52, bold:true, color:"0D1B2A" })] }),
+    new Paragraph({ spacing:{ after:200 }, border:{ bottom:{ style:BorderStyle.SINGLE, size:10, color:GOLD, space:6 } }, children:[new TextRun({ text:`${jd.department}  ·  ${jd.scope}`, font:"Arial", size:22, color:"555555" })] }),
+    sp(), infoTbl, sp(),
+    sh("Job Summary"), bd(jd.jobSummary), sp(),
+    sh("Key Responsibilities"), ...jd.keyResponsibilities.map(bl), sp(),
+    sh("Education & Qualifications"), ...jd.qualifications.education.map(bl), sp(),
+    sh("Experience Requirements"), ...jd.qualifications.experience.map(bl), sp(),
+    sh("Skills"), ...jd.qualifications.skills.map(bl), sp(),
+    sh("Behavioral Competencies"), ...jd.competencies.map(bl), sp(),
+    sh("Working Conditions"), bd(jd.workingConditions), sp(), sp(),
+    new Paragraph({ alignment:AlignmentType.CENTER, border:{ top:{ style:BorderStyle.SINGLE, size:4, color:GOLD, space:6 } }, children:[new TextRun({ text:"Abudawood Group — Confidential HR Document", font:"Arial", size:18, color:"888888" })] })
+  ];
+  const doc = new Document({ numbering:numCfg, styles:{ default:{ document:{ run:{ font:"Arial", size:22 } } } }, sections:[{ properties:{ page:{ size:{ width:11906, height:16838 }, margin:{ top:1440, right:1260, bottom:1440, left:1260 } } }, children }] });
+  const buf  = await Packer.toBuffer(doc);
+  const blob = new Blob([buf], { type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'JD_' + jdTitle.replace(/[^a-zA-Z0-9]/g,'_') + '_Abudawood.docx'; a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+
+
+<veepn-lock-screen><template shadowrootmode="open"><style>html{box-sizing:border-box;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;word-break:normal;tab-size:4}*,:before,:after{box-sizing:border-box;background-repeat:no-repeat}:before,:after{-webkit-text-decoration:inherit;text-decoration:inherit;vertical-align:inherit}*{margin:0;padding:0}hr{height:0;color:inherit;border:0;border-top:1px solid;overflow:visible}details,main{display:block}summary{display:list-item}small{font-size:80%}[hidden]{display:none!important}abbr[title]{border-bottom:none;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}a{background-color:#0000}a:active,a:hover{outline-width:0}code,kbd,pre,samp{font-family:monospace}pre{font-size:1em}b,strong{font-weight:bolder}sub,sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{border-color:inherit;text-indent:0}iframe{border-style:none}input{border-radius:0}[type=number]::-webkit-inner-spin-button{height:auto}[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{appearance:none}textarea{resize:vertical;overflow:auto}button,input,optgroup,select,textarea{font:inherit;color:inherit}optgroup{font-weight:700}button{overflow:visible}button,select{text-transform:none}button,[type=button],[type=reset],[type=submit],[role=button]{cursor:pointer}button::-moz-focus-inner{border-style:none;padding:0}[type=button]::-moz-focus-inner{border-style:none;padding:0}[type=reset]::-moz-focus-inner{border-style:none;padding:0}[type=submit]::-moz-focus-inner{border-style:none;padding:0}button,html [type=button],[type=reset],[type=submit]{appearance:auto}button,input,select,textarea{background-color:#0000;border-style:none}button:-moz-focusring{outline:1px dotted buttontext}[type=button]::-moz-focus-inner{outline:1px dotted buttontext}[type=reset]::-moz-focus-inner{outline:1px dotted buttontext}[type=submit]::-moz-focus-inner{outline:1px dotted buttontext}select{appearance:none}a:focus,button:focus,input:focus,select:focus,textarea:focus{outline-width:0}select::-ms-expand{display:none}select::-ms-value{color:currentColor}legend{color:inherit;white-space:normal;border:0;max-width:100%;display:table}::-webkit-file-upload-button{appearance:auto;color:inherit;font:inherit}[disabled]{cursor:default}img{border-style:none}progress{vertical-align:baseline}[aria-busy=true]{cursor:progress}[aria-controls]{cursor:pointer}[aria-disabled=true]{cursor:default}ul,ol{list-style-type:none}figure{margin:0}@keyframes slide-in{0%{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0%)}}.gradient-blue{background:radial-gradient(106.41% 128.47% at 50.15% 128.47%,#23abff 0%,#3066ff 100%)}.gradient-green{background:radial-gradient(92.26% 118.88% at 50.15% .13%,#00c3c3 0%,#00aab3 100%)}.gradient-purple{background:radial-gradient(165.12% 115.56% at 50.15% .13%,#a15aff 0%,#00a0eb 100%)}.bg-blue{background-color:#f2f5ff}.bg-purple{background-color:#f7f0ff}.bg-green{background-color:#ebffed}.lock-screen{letter-spacing:normal;z-index:2147483638;border-radius:24px;width:327px;font-family:FigtreeVF,sans-serif;animation:.3s ease-in-out forwards slide-in;position:fixed;bottom:24px;right:24px;overflow:hidden;box-shadow:0 24px 32px #00000014}.lock-screen__content{padding:24px 24px 64px;position:relative}.lock-screen__close{opacity:.5;justify-content:center;align-items:center;width:24px;height:24px;display:flex;position:absolute;top:16px;right:16px}.lock-screen__label{color:#fff;background-color:#fff3;border-radius:50px;justify-content:center;align-items:center;gap:8px;width:fit-content;height:26px;margin:-8px auto 16px;padding-inline:16px;font-size:12px;line-height:18px;display:flex}.lock-screen__title{color:#fff;text-align:center;margin-bottom:8px;font-size:20px;font-weight:600;line-height:28px}.lock-screen__description{color:#f5f6f7;text-align:center;font-size:14px;line-height:20px}.lock-screen__description b{font-weight:600}.lock-screen__card{z-index:1;background-color:#fff;border-radius:24px;margin-top:-44px;padding:32px 20px 20px;position:relative}.lock-screen__inner{margin-bottom:24px}.lock-screen__submit{color:#fff;background-color:#f70;border-radius:12px;justify-content:center;align-items:center;gap:10px;width:100%;height:40px;margin-bottom:16px;padding-inline:16px;font-size:16px;font-weight:700;display:flex}.lock-screen__skip{color:#82829c;justify-content:center;align-items:center;margin-inline:auto;font-size:14px;line-height:20px;display:flex}.price-card{background:linear-gradient(254.14deg,#fafbff .04%,#f5f8ff 100.04%);border:1px solid #f2f2fc;border-radius:24px;padding:24px 28px}.price-card__label{color:#4a5764;text-align:center;text-transform:uppercase;margin-bottom:16px;font-size:14px;line-height:20px}.price-card__price{justify-content:center;align-items:flex-start;column-gap:2px;margin-bottom:12px;display:flex}.price-card__currency{color:#515478;font-size:18px;line-height:28px}.price-card__number{color:#14142a;text-align:center;font-size:64px;line-height:54px}.price-card__wrap{flex-direction:column;display:flex}.price-card__decimal{color:#515478;font-size:18px;font-weight:600;line-height:28px}.price-card__period{color:#515478;margin-top:-6px;font-size:14px;line-height:20px}.price-card__discount{justify-content:center;align-items:center;margin-bottom:12px;display:flex;position:relative}.price-card__discount-divider{z-index:0;background-color:#dbe2f9;width:100%;height:1px;position:absolute;top:50%;left:0;transform:translateY(-50%)}.price-card__discount-icon{z-index:1;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.price-card__discount-text{z-index:2;color:#fff;font-size:12px;font-weight:600;line-height:18px;position:relative}.price-card__features{justify-content:center;align-items:center;column-gap:16px;display:flex}.price-card__feature{color:#222e3a;align-items:center;gap:6px;font-size:14px;line-height:20px;display:flex}.price-card__feature:before{content:"";background-color:#20df9e;border-radius:50%;flex-shrink:0;width:4px;height:4px;display:block}.features-list{grid-template-columns:repeat(3,1fr);gap:12px;display:grid}.features-list__item{flex-direction:column;align-items:center;gap:6px;display:flex}.features-list__icon{border-radius:12px;justify-content:center;align-items:center;width:52px;height:52px;display:flex}.features-list__text{color:#293a53;text-align:center;letter-spacing:-.1px;font-size:16px;line-height:24px}</style></template><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2-variations");font-weight:100 1000;font-display:swap}</style></veepn-lock-screen></body></html>
